@@ -1,0 +1,25 @@
+.head
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  z-index: 100
+  background-color: $snow
+  border-bottom: 2px solid $cloud
+  // transition: $transition
+  display: none
+  @media (max-width: $mobile)
+    border-width: 1px
+
+  &.shadow
+    box-shadow: 0 2px 25px 1px rgba(0,0,0,.2)
+
+    .head__inner
+      padding: 10px 0
+
+  &__inner
+    padding: 15px 0
+    @include flex(space-between, center)
+    transition: $transition
+    @media (max-width: $mobile)
+      padding: 10px 0

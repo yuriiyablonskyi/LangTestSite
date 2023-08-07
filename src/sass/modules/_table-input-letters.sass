@@ -1,0 +1,19 @@
+.table-input-letters
+  height: 100%
+  width: 652px
+  border-spacing: 8px
+  margin: -8px auto 32px
+  @media (max-width: $mobile)
+    border-spacing: 5px
+    margin: -5px auto 10px
+    min-width: 330px
+    width: 100%
+
+  td:nth-child(1)
+    @media (max-width: $tablet)
+      display: none
+
+  td:nth-child(2)::before
+    @media (max-width: $tablet)
+      content: attr(data-table-letter) '. '
+      font-size: 17px

@@ -1,0 +1,32 @@
+.td,
+.td--disabled,
+.th
+  padding: 9px 13px
+
+.td
+  vertical-align: middle
+  @include border(2px, $lightgray, 5px)
+  background-color: $lightgray
+  @media (max-width: $mobile)
+    border-width: 1px
+
+  &--alphanumeric
+    width: 44px
+    font-weight: 700
+    text-align: center
+    text-transform: uppercaseє
+    @media (max-width: $mobile)
+      font-weight: 600
+
+.td--disabled,
+.th
+  background-color: $lavender
+  @include border(2px, $cloud, 5px)
+  @media (max-width: $mobile)
+    border-width: 1px
+
+.td-input
+  height: 44px
+  width: 44px
+  @media (max-width: $mobile)
+    height: 40px

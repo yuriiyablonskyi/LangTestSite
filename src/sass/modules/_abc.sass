@@ -1,0 +1,95 @@
+.abc
+  margin-bottom: 24px
+  @media (max-width: $mobile)
+    margin-bottom: 20px
+
+  &__list
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    @media (max-width: $mobile)
+      flex-direction: column
+
+  &__item
+    margin-bottom: 8px
+
+  &__options--narrow
+    width: 600px
+    @media (max-width: $mobile)
+      width: 100%
+
+  &__options--wide
+    width: 632px
+    @media (max-width: $mobile)
+      width: 100%
+
+  &__item--disabled
+    margin-right: 100px
+    @media (max-width: $tablet)
+      margin-right: 0
+
+  &__title
+    font-weight: 500
+    margin-bottom: 8px
+    @media (max-width: $mobile)
+      font-weight: 400
+
+  &__text
+    width: 100%
+    display: flex
+    align-items: center
+    @include border(2px, $cloud, 5px)
+    padding: 12px 16px
+    margin-bottom: 8px
+    transition: $transition
+    @media (max-width: $mobile)
+      border-width: 1px
+    @media (max-width: $small-mobile)
+      margin-bottom: 6px
+      padding: 10px 14px
+
+  &__radio
+    display: none
+
+  &__radio[disabled] + &__text
+    background-color: $lavender
+
+  &__radio:not([disabled]) + &__text:hover
+    cursor: pointer
+    border-color: rgba($black, 0.24)
+
+    .abc__checkmark
+      border-color: $black
+      @media (max-width: $tablet)
+        border-color: $blue
+
+  &__radio:checked + &__text
+    .abc__checkmark
+      box-shadow: none
+      border-color: $blue
+      background-color: $blue
+
+    .abc__checkmark:before
+      opacity: 1
+
+  &__checkmark
+    display: inline-block
+    height: 20px
+    min-width: 20px
+    margin-right: 8px
+    @include border(2px, $frost, 5px)
+    box-shadow: 0px 1px 0px rgba(40, 40, 40, 0.08)
+    transition: $transition
+    position: relative
+    @media (max-width: $mobile)
+      border-width: 1px
+
+  &__checkmark:before
+    content: "\2713"
+    opacity: 0
+    position: absolute
+    color: $white
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    transition: $transition

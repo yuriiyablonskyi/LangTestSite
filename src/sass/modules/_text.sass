@@ -1,0 +1,70 @@
+.text
+  &__content
+    margin-bottom: 40px
+    line-height: 3.5
+    @media (max-width: $mobile)
+      line-height: 1.6
+      margin-bottom: 20px
+
+  &__input
+    font-weight: 500
+    font-size: 14px
+    line-height: 1.6
+    color: $black
+    max-width: 176px
+    padding: 6px 15px
+    margin: 0 8px
+    border-bottom: 2px solid $cloud
+    border-radius: 5px 5px 0px 0px
+    transition: $transition
+    @media (max-width: $mobile)
+      margin: 2px 0
+      padding: 1px
+      max-width: 120px
+      font-weight: 400
+      font-size: 16px
+      text-align: center
+
+    &--narrow
+      width: 42px
+      text-transform: uppercase
+      text-align: center
+
+    &--medium
+      width: 128px
+
+    &[disabled]
+      background-color: $lavender
+      color: rgba($black, 0.64)
+
+    &:focus
+      outline: none
+      border-color: $blue
+
+    &.correct
+      border-bottom-color: $green
+
+    &.uncorrect
+      border-bottom-color: $red
+
+  &__bank
+    max-width: 750px
+    display: flex
+    flex-wrap: wrap
+    margin: 0 auto
+    justify-content: center
+    margin-bottom: 16px
+    @media (max-width: $mobile)
+      margin-bottom: 10px
+
+  &__word
+    padding: 8px 16px
+    @include border(2px, $gray, 5px)
+    margin: 0 4px 8px
+    @media (max-width: $mobile)
+      padding: 6px 10px
+      margin: 0 2px 6px
+      border-width: 1px
+
+    &--disabled
+      background-color: $lavender

@@ -1,0 +1,44 @@
+.radio-text
+  &__box
+    display: inline-block
+    margin: 0px 4px
+
+  &__radio
+    display: none
+
+  &__radio:not([disabled]) + &__label:hover
+    cursor: pointer
+    border-color: $black
+    transition: $transition
+
+  &__radio:checked:not([disabled]) + &__label
+    background-color: $blue
+    border-color: $blue
+    color: $white
+
+    &.uncorrect,
+    &.correct
+      border-color: transparent
+    &.uncorrect
+      color: $red
+      background-color: $light-red
+    &.correct
+      color: $green
+      background-color: $light-green
+
+  &__radio[checked][disabled] + &__label
+    background-color: $lavender
+
+  &__label
+    display: inline-block
+    line-height: 1.4
+    padding: 8px 16px
+    margin: 0 2px
+    @include border(2px, $gray, 5px)
+    background-color: $white
+    white-space: nowrap
+    transition: $transition
+    @media (max-width: $mobile)
+      padding: 4px 8px
+      margin: 2px 0
+      border-width: 1px

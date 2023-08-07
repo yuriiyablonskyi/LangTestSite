@@ -1,0 +1,16 @@
+@mixin font-face($font-family, $url, $weight, $style)
+    @font-face
+        font-family: $font-family
+        src: url('../fonts/#{$url}.woff2') format('woff2')
+        font-weight: $weight
+        font-display: swap
+        font-style: $style
+
+@mixin border($width, $color, $radius)
+    border: $width solid $color
+    border-radius: $radius
+
+@mixin flex($main-axis, $transverse-axis)
+    display: flex
+    justify-content: $main-axis
+    align-items: $transverse-axis

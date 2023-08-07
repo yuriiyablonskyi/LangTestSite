@@ -1,0 +1,82 @@
+@import vars
+@import mixins
+@import font
+@import reset
+
+body
+  font-family: Inter, sans-serif
+  margin: 0
+  font-weight: 500
+  font-size: 14px
+  line-height: 1.6
+  color: $black
+  overflow-x: hidden
+  @media (max-width: $mobile)
+    font-size: 16px
+    font-weight: 400
+
+  &.modal
+    overflow: hidden
+    margin-right: 15px
+
+.container
+  max-width: 1342px
+  width: 100%
+  margin: 0 auto
+  padding: 0 15px
+
+.link
+  color: $blue
+  transition: $transition
+  @media (max-width: $mobile)
+    opacity: .7
+
+  &:hover
+    opacity: .6
+
+.section
+  display: none
+  margin-top: 74px
+  @media (max-width: $mobile)
+    margin-top: 63px
+
+  .uncorrect
+    border-color: $red
+
+  .correct
+    border-color: $green
+
+.content
+  margin-bottom: 24px
+  line-height: 3.5
+  @media (max-width: $mobile)
+    line-height: 1.6
+    margin-bottom: 10px
+
+.hidden
+  @media (max-width: $tablet)
+    display: none
+
+@import main
+@import modules/modal
+
+@import modules/abc
+@import modules/head
+@import modules/info
+@import modules/table-boolean
+@import modules/table-input
+@import modules/table-number
+@import modules/text
+@import modules/img
+@import modules/table-input-letters
+@import modules/radiotext
+@import modules/dialogue
+@import modules/conversation
+
+@import components/btn
+@import components/countdown
+@import components/input-field
+@import components/item
+@import components/table
+@import components/input-text
+@import components/audio

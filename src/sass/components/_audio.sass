@@ -1,0 +1,16 @@
+.audio
+  &__svg
+    margin-right: 16px
+    height: 40px
+    min-width: 40px
+    max-width: 40px
+    @include border(2px, $cloud, 5px)
+    fill: $slate
+    transition: $transition
+    @media (max-width: $mobile)
+      display: none
+      border-width: 1px
+
+    &.active
+      fill: $blue
+      border-color: $blue

@@ -1,0 +1,56 @@
+.btn
+  padding: 11px
+  font-size: 12px
+  font-weight: 600
+  background: $white
+  @include border(2px, $frost, 5px)
+  cursor: pointer
+  transition: $transition
+  @media (max-width: $mobile)
+    border-width: 1px
+    font-size: 13px
+
+  &--large
+    @include flex(space-between, center)
+    width: 252px
+    min-height: 46px
+    font-size: 14px
+    @media (max-width: $small-mobile)
+      width: calc(100vw - 30px)
+
+  &:disabled
+    cursor: default
+
+  &:hover:not([disabled])
+    background-color: $blue
+    border-color: $blue
+    transform: scale(1.015)
+    box-shadow: rgba(0,0,0,.3) 0px 10px 40px 1px
+
+    .btn__svg
+      fill: $white
+
+    .btn__text
+      color: $white
+
+  &__text
+    text-transform: capitalize
+    font-weight: 600
+    transition: $transition
+    @media (max-width: $mobile)
+      font-weight: 400
+
+  &__svg
+    height: 12px
+    width: 12px
+    transition: $transition
+    @media (max-width: $mobile)
+      fill: $slate
+
+  &__svg--left
+    transform: rotate(180deg)
+    margin-right: 16px
+    vertical-align: middle
+    @media (max-width: $tablet)
+      transform: scale(1.5) rotate(180deg)
+      margin: 0 7px

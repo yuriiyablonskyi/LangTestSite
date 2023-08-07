@@ -1,0 +1,47 @@
+.info
+  display: flex
+  justify-content: space-between
+  padding: 16px 0
+  position: relative
+  margin-bottom: 24px
+  @media (max-width: $mobile)
+    padding: 10px 0
+    margin-bottom: 20px
+    flex-direction: column
+
+  &:before,
+  &--main:after
+    content: ''
+    display: block
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
+    width: 100vw
+
+  &:before
+    top: -2px
+    height: 100%
+    background-color: $snow
+    z-index: -1
+
+  &--main
+    margin-bottom: 0
+
+  &--main:after
+    top: 100%
+    height: 2px
+    background-color: $cloud
+    @media (max-width: $mobile)
+      height: 1px
+
+  &__box
+    display: flex
+
+  &__wrapper
+    display: flex
+    @media (max-width: $mobile)
+      justify-content: space-between
+      margin-bottom: 10px
+    @media (max-width: $small-mobile)
+      flex-direction: column
+      margin-bottom: 0

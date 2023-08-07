@@ -1,0 +1,40 @@
+.input-text
+  width: 172px
+  margin: 0 8px
+  padding: 8px 12px
+  @include border(2px, $gray, 5px)
+  font-weight: 500
+  font-size: 14px
+  line-height: 1.5
+  color: $black
+  transition: $transition
+  @media (max-width: $mobile)
+    margin: 4px
+    border-width: 1px
+    font-weight: 400
+    font-size: 16px
+    padding: 4px 8px
+
+  &--narrow
+    width: 152px
+    margin: 7px 4px
+    @media (max-width: $mobile)
+      margin: 2px 0
+
+  &--wide
+    width: 568px
+    margin: 0
+    @media (max-width: $mobile)
+      min-width: 314px
+      width: 100%
+
+  // &:not([disabled]):not(:focus):hover
+  //   border-color: $black
+  //тест - зменшення селектора (з курсу excel)
+
+  &:not([disabled]):hover
+    border-color: $black
+
+  &:focus
+    outline: none
+    border-color: $blue
