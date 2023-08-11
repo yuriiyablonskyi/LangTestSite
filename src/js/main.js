@@ -1,4 +1,3 @@
-
 import rs_2017 from './data/2017/rs_2017'
 import rt_2017 from './data/2017/rt_2017'
 
@@ -15,30 +14,33 @@ import generateTableLetters from './utils/function-generate/tableLetters'
 import generateTableNumber from './utils/function-generate/tableNumber'
 import checkAnswer from './utils/function-check/checkAnswer'
 import handleModal from './utils/function-check/handleModal'
+import toggleInputState from './utils/function-check/toggleInputState'
+import removeClassAnswers from './utils/function-check/removeClassAnswers'
+import removeSelectedRadio from './utils/function-check/removeSelectedRadio'
 
-
-const head = document.querySelector('.head');
+const head = document.querySelector('.head')
 const btnToMain = document.getElementById('main-btn')
 const btnToFinish = document.getElementById('finish-btn')
 const sectionButtons = document.querySelector('.options')
 const mainPage = document.querySelector('.main')
 const countdownEl = document.getElementById('timer')
+const modalBtnToAnswers = document.getElementById('modal-show-answers')
+const modalBtnToMain = document.getElementById('modal-to-main')
 const timerValues = {
-  'rs_2017': 25,
-  'rt_2017': 45,
-  'pg_2017': 45,
-  'rs_2019': 25,
-  'rt_2019': 45,
-  'pg_2019': 45,
-  'rs_2020': 30,
-  'rt_2020': 40,
-  'pg_2020': 45
+  rs_2017: 25,
+  rt_2017: 45,
+  pg_2017: 45,
+  rs_2019: 25,
+  rt_2019: 45,
+  pg_2019: 45,
+  rs_2020: 30,
+  rt_2020: 40,
+  pg_2020: 45,
 }
 let buttonDataName = ''
 let selectedPage = ''
 let countdownInterval
 let audioOnSelectedPage
-
 
 const timer = (minutes) => {
   countdownEl.textContent = `${minutes}:00`
@@ -49,44 +51,42 @@ const timer = (minutes) => {
     countdown--
     const minutesRemaining = Math.floor(countdown / 60)
     const secondsRemaining = countdown % 60
-    const countdownText = `${minutesRemaining.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`
+    const countdownText = `${minutesRemaining
+      .toString()
+      .padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`
     countdownEl.textContent = countdownText
 
     if (countdown === 0) {
       clearInterval(countdownInterval)
       handleToFinish()
     }
-
   }, 1000)
 }
 
-const handleTimer = buttonDataName => {
+const handleTimer = (buttonDataName) => {
   if (!timerValues.hasOwnProperty(buttonDataName)) return
   timer(timerValues[buttonDataName])
 }
 
-const showElement = element => element.style.display = 'block'
-const hideElement = element => element.style.display = 'none'
+const showElement = (element) => (element.style.display = 'block')
+const hideElement = (element) => (element.style.display = 'none')
 
-const removeClass = selector => selectedPage.querySelectorAll(selector)
-  .forEach(element => element.classList.remove(selector.replace(/\./g, '')))
+const removePointsFromSpans = () =>
+  selectedPage
+    .querySelectorAll('.item__text span')
+    .forEach((element) => (element.textContent = '-'))
 
-const clearRadioSelection = inputsRadio => inputsRadio
-  .forEach(inputRadio => inputRadio.checked = false)
-
-const removePointsFromSpans = selector => selectedPage.querySelectorAll(selector)
-  .forEach(element => element.textContent = '-')
-
-const finishAudio = audio => {
+const finishAudio = (audio) => {
   if (!audio) return
   audio.pause()
   audio.currentTime = 0
 }
 
-
-const handleToPage = e => {
+const handleToPage = (e) => {
   buttonDataName = e.target.closest('.btn[data-test]').dataset.test
-  selectedPage = document.querySelector(`section[data-test='${buttonDataName}']`)
+  selectedPage = document.querySelector(
+    `section[data-test='${buttonDataName}']`
+  )
   audioOnSelectedPage = selectedPage.querySelector('audio')
 
   hideElement(mainPage)
@@ -103,24 +103,43 @@ const handleToMain = () => {
   showElement(mainPage)
   hideElement(head)
   hideElement(selectedPage)
-  removePointsFromSpans('.point')
+  removePointsFromSpans()
+  toggleInputState(btnToFinish)
+  removeClassAnswers(selectedPage)
+  removeSelectedRadio(selectedPage)
 }
 
 const handleToFinish = () => {
-  handleModal(1)
-  clearInterval(countdownInterval)
-  finishAudio(audioOnSelectedPage)
   checkAnswer(selectedPage)
+  const totalPoints = checkAnswer(selectedPage)
+  handleModal(1, totalPoints)
+  finishAudio(audioOnSelectedPage)
+  clearInterval(countdownInterval)
 }
 
-sectionButtons.addEventListener('click', e => {
+sectionButtons.addEventListener('click', (e) => {
   const button = e.target.closest('button[data-test]')
   if (button) handleToPage(e)
 })
+
 btnToMain.addEventListener('click', handleToMain)
 btnToFinish.addEventListener('click', handleToFinish)
 
-window.addEventListener('scroll', () => window.scrollY > 0 ? head.classList.add('shadow') : head.classList.remove('shadow'));
+modalBtnToAnswers.addEventListener('click', () => {
+  toggleInputState(btnToFinish)
+  handleModal(0)
+})
+
+modalBtnToMain.addEventListener('click', () => {
+  handleToMain()
+  toggleInputState(btnToFinish)
+})
+
+window.addEventListener('scroll', () =>
+  window.scrollY > 0
+    ? head.classList.add('shadow')
+    : head.classList.remove('shadow')
+)
 
 generateTestAbc(rs_2017.firstTest, '.abc-first0', 'abc1', 1, 0.5)
 generateTestAbc(rs_2017.secondTest, '.abc-second0', 'abc2', 0, 1)
@@ -138,21 +157,41 @@ generateTableBoolean(rs_2020.tableBoolean, '.table-box-boolean2', 's20_b', 1)
 generateTableNumber(rs_2020.tableNumber, '.table-number1', 1)
 generateTableInput(rs_2020.tableInput, '.table-box-input2', 2)
 
-generateTestAbc(rt_2017.firstTest, '.abc-first3', 'abc3', 2, 1, 'abc__options--narrow');
-generateTableBoolean(rt_2017.tableBoolean, '.table-box-boolean3', 't17_b', 1);
-generateTableLetters(rt_2017.tableLetters, '.table-letters0', 0);
-generateTableInput(rt_2017.tableInput, '.table-box-input3', 3);
+generateTestAbc(
+  rt_2017.firstTest,
+  '.abc-first3',
+  'abc3',
+  2,
+  1,
+  'abc__options--narrow'
+)
+generateTableBoolean(rt_2017.tableBoolean, '.table-box-boolean3', 't17_b', 1)
+generateTableLetters(rt_2017.tableLetters, '.table-letters0', 0)
+generateTableInput(rt_2017.tableInput, '.table-box-input3', 3)
 
-generateTestAbc(rt_2019.firstTest, '.abc-first4', 'abc6', 0, 1, 'abc__options--narrow')
+generateTestAbc(
+  rt_2019.firstTest,
+  '.abc-first4',
+  'abc6',
+  0,
+  1,
+  'abc__options--narrow'
+)
 generateTableBoolean(rt_2019.tableBoolean, '.table-box-boolean4', 't19_b', 0)
 generateTableLetters(rt_2019.tableLetters, '.table-letters1', 1)
 generateTableInput(rt_2019.tableInput, '.table-box-input4', 1)
 
-generateTestAbc(rt_2020.firstTest, '.abc-first5', 'abc9', 1, 1, 'abc__options--narrow')
+generateTestAbc(
+  rt_2020.firstTest,
+  '.abc-first5',
+  'abc9',
+  1,
+  1,
+  'abc__options--narrow'
+)
 generateTableBoolean(rt_2020.tableBoolean, '.table-box-boolean5', 't20_b', 0)
 generateTableLetters(rt_2020.tableLetters, '.table-letters2', 2)
 generateTableInput(rt_2020.tableInput, '.table-box-input5', 1)
-
 
 // const contentConfig = [
 //   {

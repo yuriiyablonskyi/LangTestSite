@@ -1,22 +1,39 @@
 import checkAnswerInputRadio from './checkAnswerInputRadio'
 import checkAnswerInputText from './checkAnswerInputText'
+import formatNumber from './formatNumber'
 
 export default function checkAnswer(selectedPage) {
   const blocksOnSelectedPage = selectedPage.querySelectorAll('[data-block]')
+  const spanPoint = selectedPage.querySelector('.total-point')
 
-  blocksOnSelectedPage.forEach((testBlock, i) => {
-    const inputsRadioArray = testBlock.querySelectorAll('input[type="radio"]:checked:not([disabled])')
-    const inputsTextArray = testBlock.querySelectorAll('input[type="text"]:not([disabled])')
-    const spanPoint = testBlock.querySelector('.point')
+  const totalPoint = Array.from(blocksOnSelectedPage).reduce(
+    (accumulator, testBlock) => {
+      const inputsRadioArray = testBlock.querySelectorAll(
+        'input[type="radio"]:not([disabled])'
+      )
+      const inputsTextArray = testBlock.querySelectorAll(
+        'input[type="text"]:not([disabled])'
+      )
+      if (inputsTextArray.length) {
+        const localPointsInputText = checkAnswerInputText(
+          inputsTextArray,
+          testBlock
+        )
+        return accumulator + localPointsInputText
+      }
 
-    if (inputsTextArray.length) {
-      const localPointsInputText = checkAnswerInputText(inputsTextArray, testBlock)
-      console.log('inputsTextArray point: ' + localPointsInputText + ', index (testBlock): ' + i);
-    }
+      if (inputsRadioArray.length) {
+        const localPointsInputRadio = checkAnswerInputRadio(
+          inputsRadioArray,
+          testBlock
+        )
+        return accumulator + localPointsInputRadio
+      }
+    },
+    0
+  )
 
-    if (inputsRadioArray.length) {
-      const localPointsInputRadio = checkAnswerInputRadio(inputsRadioArray, testBlock)
-      console.log('localPointsInputRadio point: ' + localPointsInputRadio + ', index (testBlock): ' + i);
-    }
-  })
+  const stringTotalPoint = formatNumber(totalPoint)
+  spanPoint.textContent = stringTotalPoint
+  return totalPoint
 }

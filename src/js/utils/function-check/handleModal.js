@@ -1,18 +1,21 @@
-export default function handleModal(flag) {
-  const btn = document.getElementById('finish-btn')
+import calculatePercentage from './calculatePercentage'
+
+export default function handleModal(flag, points) {
   const modal = document.querySelector('.modal')
   const modalPercent = document.querySelector('.modal__percent')
   const modalPoint = document.querySelector('.modal__point')
   const body = document.body
-  console.log(flag)
+
+  const percentage = calculatePercentage(points)
+  modalPoint.textContent = points
+  modalPercent.textContent = percentage
+
   if (flag) {
-    btn.disabled = true
-    body.classList.add('modal')
+    body.classList.add('body--modal')
     modal.classList.add('show')
     document.querySelector('.head').style.paddingRight = '16px'
   } else {
-    btn.disabled = false
-    body.classList.remove('modal')
+    body.classList.remove('body--modal')
     modal.classList.remove('show')
     document.querySelector('.head').style.paddingRight = '0'
   }
