@@ -1,4 +1,4 @@
-import formatNumber from './formatNumber'
+import formatNumber from '../other-function/formatNumber'
 
 export default function checkAnswerInputRadio(inputsRadioArray, testBlock) {
   const spanPoint = testBlock.querySelector('.point')

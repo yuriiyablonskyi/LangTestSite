@@ -4,6 +4,5 @@ export default function removeSelectedRadio(page) {
   )
   for (const input of radioInputs) {
     input.checked = false
-    console.log(input)
   }
 }

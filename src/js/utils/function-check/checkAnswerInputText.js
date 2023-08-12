@@ -1,4 +1,4 @@
-import formatNumber from './formatNumber'
+import formatNumber from '../other-function/formatNumber'
 
 export default function checkAnswerInputText(inputsTextArray, testBlock) {
   const spanPoint = testBlock.querySelector('.point')

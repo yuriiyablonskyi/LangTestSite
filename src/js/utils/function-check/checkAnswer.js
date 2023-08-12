@@ -1,6 +1,6 @@
 import checkAnswerInputRadio from './checkAnswerInputRadio'
 import checkAnswerInputText from './checkAnswerInputText'
-import formatNumber from './formatNumber'
+import formatNumber from '../other-function/formatNumber'
 
 export default function checkAnswer(selectedPage) {
   const blocksOnSelectedPage = selectedPage.querySelectorAll('[data-block]')
