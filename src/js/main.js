@@ -14,14 +14,18 @@ import checkAnswer from './utils/function-check/checkAnswer'
 import toggleModal from './utils/other-function/toggleModal'
 import removeClassAnswers from './utils/other-function/removeClassAnswers'
 import removeSelectedRadio from './utils/other-function/removeSelectedRadio'
+import clearInputOnPage from './utils/other-function/clearInputOnPage'
+import toggleMainPage from './utils/other-function/toggleMainPage'
 
 const head = document.querySelector('.head')
 const mainPageBtn = document.getElementById('main-btn')
+const resultsToMainBtn = document.getElementById('results-to-main')
 const checkTestBtn = document.getElementById('finish-btn')
 const sectionButtons = document.querySelector('.options')
 const mainPage = document.querySelector('.main')
 const countdownEl = document.getElementById('timer')
 const modalBtns = document.querySelector('.modal__buttons')
+const resultPage = document.querySelector('.results')
 
 const timerValues = {
   rs_2017: 25,
@@ -66,9 +70,6 @@ const handleTimer = buttonDataName => {
   timer(timerValues[buttonDataName])
 }
 
-const showElement = element => (element.style.display = 'block')
-const hideElement = element => (element.style.display = 'none')
-
 const removePointsFromSpans = () =>
   selectedPage
     .querySelectorAll('.item__text span')
@@ -82,50 +83,44 @@ const finishAudio = (audio) => {
 
 const handleToSelectedPage = e => {
   buttonDataName = e.target.closest('.btn[data-test]').dataset.test
-  selectedPage = document.querySelector(
-    `section[data-test='${buttonDataName}']`
-  )
+  selectedPage = document.querySelector(`section[data-test='${buttonDataName}']`)
   audioOnSelectedPage = selectedPage.querySelector('audio')
-
-  hideElement(mainPage)
-  showElement(selectedPage)
-  showElement(head)
+  toggleMainPage(true, mainPage, selectedPage, head)
   handleTimer(buttonDataName)
   if (audioOnSelectedPage) audioOnSelectedPage.play()
-  checkTestBtn.addEventListener('click', () => {
-    checkTestResults()
-    checkTestBtn.disabled = true
-  })
+  checkTestBtn.addEventListener('click', () => checkTestResults())
 }
 
 const handleToMainPage = () => {
   toggleModal(false)
   finishAudio(audioOnSelectedPage)
   clearInterval(countdownInterval)
-  showElement(mainPage)
-  hideElement(head)
-  hideElement(selectedPage)
+  toggleMainPage(false, mainPage, selectedPage, head)
   removePointsFromSpans()
   removeClassAnswers(selectedPage)
   removeSelectedRadio(selectedPage)
+  clearInputOnPage(selectedPage)
   checkTestBtn.disabled = false
 }
 
 const checkTestResults = () => {
-  checkAnswer(selectedPage)
   const totalPoints = checkAnswer(selectedPage)
   toggleModal(true, totalPoints)
+  checkAnswer(selectedPage)
   finishAudio(audioOnSelectedPage)
   clearInterval(countdownInterval)
-  checkTestBtn.removeEventListener('click', () => {
-    checkTestResults()
-    checkTestBtn.disabled = false
-  })
+  checkTestBtn.removeEventListener('click', () => checkTestResults())
 }
 
 sectionButtons.addEventListener('click', e => {
-  const button = e.target.closest('button[data-test]')
-  if (button) handleToSelectedPage(e)
+  const element = e.target
+  if (element.closest('button[data-test]')) {
+    handleToSelectedPage(e)
+  }
+
+  if (element.closest('#history-btn')) {
+    toggleMainPage(true, mainPage, resultPage)
+  }
 })
 
 mainPageBtn.addEventListener('click', handleToMainPage)
@@ -133,8 +128,13 @@ mainPageBtn.addEventListener('click', handleToMainPage)
 modalBtns.addEventListener('click', e => {
   const element = e.target
   if (element.closest('#to-main')) handleToMainPage()
-  if (element.closest('#show-answers')) toggleModal(false)
+  if (element.closest('#show-answers')) {
+    toggleModal(false)
+    checkTestBtn.disabled = true
+  }
 })
+
+resultsToMainBtn.addEventListener('click', () => toggleMainPage(false, mainPage, resultPage))
 
 window.addEventListener('scroll', () => window.scrollY > 0
   ? head.classList.add('shadow')
