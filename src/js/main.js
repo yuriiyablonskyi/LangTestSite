@@ -170,3 +170,72 @@ generateTestAbc(rt_2020.firstTest, '.abc-first5', 'abc9', 1, 1, 'abc__options--n
 generateTableBoolean(rt_2020.tableBoolean, '.table-box-boolean5', 't20_b', 0)
 generateTableLetters(rt_2020.tableLetters, '.table-letters2', 2)
 generateTableInput(rt_2020.tableInput, '.table-box-input5', 1)
+
+// Функция для сохранения результатов теста в Local Storage
+function saveTestResult(category, points, percentage) {
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()} ${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
+
+  const result = {
+    category: category,
+    date: formattedDate,
+    points: points,
+    percentage: percentage
+  };
+
+  // Получаем ранее сохраненные результаты или создаем пустой массив
+  let results = JSON.parse(localStorage.getItem('testResults')) || [];
+  results.push(result);
+
+  // Сохраняем обновленные результаты в Local Storage
+  localStorage.setItem('testResults', JSON.stringify(results));
+}
+
+// Функция для генерации HTML элементов на основе сохраненных результатов
+function generateResultsHTML(results) {
+  const resultsList = document.querySelector('.results__list');
+  resultsList.innerHTML = '';
+
+  results.forEach((result, index) => {
+    const listItem = document.createElement('li');
+    listItem.classList.add('results__item');
+    listItem.innerHTML = `
+      <span class="results__subtle-text" id="number">${index + 1}</span>
+      <span class="results__strong-text" id="kategory">${result.category}</span>
+      <span class="results__strong-text" id="date">${result.date}</span>
+      <span class="results__subtle-text" id="points">${result.points} z 30 punktów</span>
+      <span class="results__strong-text" id="percentage">${result.percentage}%</span>
+      <button class="results__btn">
+        <svg class="results__svg">
+          <use xlink:href="./img/delete.svg#delete"></use>
+        </svg>
+      </button>
+    `;
+
+    resultsList.appendChild(listItem);
+  });
+}
+
+// Вспомогательная функция для получения названия месяца по номеру
+function getMonthName(monthNumber) {
+  const monthNames = [
+    'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
+    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'
+  ];
+  return monthNames[monthNumber];
+}
+
+// Пример использования
+const category = 'Rozumienie tekstów pisanych - 2019';
+const points = 24;
+const totalQuestions = 30;
+const percentage = ((points / totalQuestions) * 100).toFixed(0);
+saveTestResult(category, points, totalQuestions, percentage);
+
+// Получаем сохраненные результаты и генерируем HTML
+const savedResults = JSON.parse(localStorage.getItem('testResults')) || [];
+generateResultsHTML(savedResults);
+function clearLocalStorage() {
+  localStorage.removeItem('testResults');
+}
+// clearLocalStorage();

@@ -1,0 +1,63 @@
+@import '../_vars'
+@import '../_mixins'
+
+.results
+  display: none
+  background-color: $lightgray
+  padding: 40px 0
+  min-height: 100vh
+
+  &__head
+    margin-bottom: 20px
+
+  &__list
+    background-color: $white
+    padding: 20px
+    border-radius: 10px
+
+  &__item
+    padding: 14px 18px
+    @include flex(space-between, center)
+    border-radius: 5px
+
+    &:nth-child(odd)
+      background-color: $lightgray
+
+  &__subtle-text,
+  &__strong-text
+    font-size: 15px
+
+  &__subtle-text
+    color: $slate
+
+  &__strong-text
+    font-weight: 600
+    color: $black
+
+  &__btn
+    background-color: transparent
+    cursor: pointer
+    padding: 5px 8px
+
+  &__btn:hover
+    .results__svg
+      fill: #ff0404
+      transform: scale(1.08)
+
+  &__svg
+    fill: #70798F
+    height: 20px
+    width: 19px
+    border-radius: 5px
+    transition: all .15s linear
+
+// .container
+
+// .btn
+//   &__svg
+
+//     &__svg--left
+
+//     &__text
+
+// .hidden

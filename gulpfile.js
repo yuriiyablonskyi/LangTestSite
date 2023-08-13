@@ -1,3 +1,4 @@
+
 const { src, dest, watch, series, parallel } = require('gulp')
 const del = require('del')
 const browserSync = require('browser-sync').create()
@@ -43,20 +44,6 @@ function js() {
     .pipe(webpack({
       // mode: 'production',
       mode: 'development',
-      module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            // use: {
-            //   loader: 'babel-loader',
-            //   options: {
-            //     presets: ['@babel/preset-env']
-            //   }
-            // }
-          }
-        ]
-      }
     }))
     .pipe(sourcemaps.write('.'))
     .pipe(dest('dist/js'))
