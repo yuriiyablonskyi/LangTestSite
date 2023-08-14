@@ -1,12 +1,9 @@
-import calculatePercentage from './calculatePercentage'
-
-export default function toggleModal(isEnabled, points) {
+export default function toggleModal(isEnabled, points, percentage) {
   const modal = document.getElementById('results')
   const modalPercent = document.querySelector('.modal__percent')
   const modalPoint = document.querySelector('.modal__point')
   const body = document.body
 
-  const percentage = calculatePercentage(points)
   modalPoint.textContent = points
   modalPercent.textContent = percentage
 
