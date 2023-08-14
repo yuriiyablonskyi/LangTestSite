@@ -16,6 +16,9 @@ import removeClassAnswers from './utils/other-function/removeClassAnswers'
 import removeSelectedRadio from './utils/other-function/removeSelectedRadio'
 import clearInputOnPage from './utils/other-function/clearInputOnPage'
 import toggleMainPage from './utils/other-function/toggleMainPage'
+import calculatePercentage from './utils/other-function/calculatePercentage'
+import saveTestResult from './utils/other-function/saveTestResult'
+import generateHTMLFromStorage from './utils/other-function/generateHTMLFromStorage'
 
 const head = document.querySelector('.head')
 const mainPageBtn = document.getElementById('main-btn')
@@ -28,7 +31,7 @@ const modalBtns = document.querySelector('.modal__buttons')
 const resultPage = document.querySelector('.results')
 
 const timerValues = {
-  rs_2017: 25,
+  rs_2017: 1,
   rt_2017: 45,
   pg_2017: 45,
   rs_2019: 25,
@@ -41,10 +44,10 @@ const timerValues = {
 
 let buttonDataName = ''
 let selectedPage = ''
-let countdownInterval
+let countdownInterval = 0
 let audioOnSelectedPage
 
-const timer = minutes => {
+const timer = (minutes) => {
   countdownEl.textContent = `${minutes}:00`
   const seconds = minutes * 60
   let countdown = seconds
@@ -65,7 +68,7 @@ const timer = minutes => {
   }, 1000)
 }
 
-const handleTimer = buttonDataName => {
+const handleTimer = (buttonDataName) => {
   if (!timerValues.hasOwnProperty(buttonDataName)) return
   timer(timerValues[buttonDataName])
 }
@@ -81,14 +84,16 @@ const finishAudio = (audio) => {
   audio.currentTime = 0
 }
 
-const handleToSelectedPage = e => {
+const handleToSelectedPage = (e) => {
   buttonDataName = e.target.closest('.btn[data-test]').dataset.test
-  selectedPage = document.querySelector(`section[data-test='${buttonDataName}']`)
+  selectedPage = document.querySelector(
+    `section[data-test='${buttonDataName}']`
+  )
   audioOnSelectedPage = selectedPage.querySelector('audio')
   toggleMainPage(true, mainPage, selectedPage, head)
   handleTimer(buttonDataName)
   if (audioOnSelectedPage) audioOnSelectedPage.play()
-  checkTestBtn.addEventListener('click', () => checkTestResults())
+  checkTestBtn.addEventListener('click', checkTestResults)
 }
 
 const handleToMainPage = () => {
@@ -105,14 +110,20 @@ const handleToMainPage = () => {
 
 const checkTestResults = () => {
   const totalPoints = checkAnswer(selectedPage)
-  toggleModal(true, totalPoints)
-  checkAnswer(selectedPage)
+  const percentage = calculatePercentage(totalPoints)
+  const currentCategoryName =
+    selectedPage.querySelector('[data-category]').textContent
+  const currentDateCategory = buttonDataName.slice(-4)
+  const currentName = `${currentCategoryName} - ${currentDateCategory}`
+  console.log('b')
+  saveTestResult(currentName, totalPoints, percentage)
+  toggleModal(true, totalPoints, percentage)
   finishAudio(audioOnSelectedPage)
   clearInterval(countdownInterval)
-  checkTestBtn.removeEventListener('click', () => checkTestResults())
+  checkTestBtn.removeEventListener('click', checkTestResults)
 }
 
-sectionButtons.addEventListener('click', e => {
+sectionButtons.addEventListener('click', (e) => {
   const element = e.target
   if (element.closest('button[data-test]')) {
     handleToSelectedPage(e)
@@ -120,12 +131,13 @@ sectionButtons.addEventListener('click', e => {
 
   if (element.closest('#history-btn')) {
     toggleMainPage(true, mainPage, resultPage)
+    generateHTMLFromStorage()
   }
 })
 
 mainPageBtn.addEventListener('click', handleToMainPage)
 
-modalBtns.addEventListener('click', e => {
+modalBtns.addEventListener('click', (e) => {
   const element = e.target
   if (element.closest('#to-main')) handleToMainPage()
   if (element.closest('#show-answers')) {
@@ -134,11 +146,15 @@ modalBtns.addEventListener('click', e => {
   }
 })
 
-resultsToMainBtn.addEventListener('click', () => toggleMainPage(false, mainPage, resultPage))
+resultsToMainBtn.addEventListener('click', () =>
+  toggleMainPage(false, mainPage, resultPage)
+)
 
-window.addEventListener('scroll', () => window.scrollY > 0
-  ? head.classList.add('shadow')
-  : head.classList.remove('shadow'))
+window.addEventListener('scroll', () =>
+  window.scrollY > 0
+    ? head.classList.add('shadow')
+    : head.classList.remove('shadow')
+)
 
 generateTestAbc(rs_2017.firstTest, '.abc-first0', 'abc1', 1, 0.5)
 generateTestAbc(rs_2017.secondTest, '.abc-second0', 'abc2', 0, 1)
@@ -156,86 +172,38 @@ generateTableBoolean(rs_2020.tableBoolean, '.table-box-boolean2', 's20_b', 1)
 generateTableNumber(rs_2020.tableNumber, '.table-number1', 1)
 generateTableInput(rs_2020.tableInput, '.table-box-input2', 2)
 
-generateTestAbc(rt_2017.firstTest, '.abc-first3', 'abc3', 2, 1, 'abc__options--narrow')
+generateTestAbc(
+  rt_2017.firstTest,
+  '.abc-first3',
+  'abc3',
+  2,
+  1,
+  'abc__options--narrow'
+)
 generateTableBoolean(rt_2017.tableBoolean, '.table-box-boolean3', 't17_b', 1)
 generateTableLetters(rt_2017.tableLetters, '.table-letters0', 0)
 generateTableInput(rt_2017.tableInput, '.table-box-input3', 3)
 
-generateTestAbc(rt_2019.firstTest, '.abc-first4', 'abc6', 0, 1, 'abc__options--narrow')
+generateTestAbc(
+  rt_2019.firstTest,
+  '.abc-first4',
+  'abc6',
+  0,
+  1,
+  'abc__options--narrow'
+)
 generateTableBoolean(rt_2019.tableBoolean, '.table-box-boolean4', 't19_b', 0)
 generateTableLetters(rt_2019.tableLetters, '.table-letters1', 1)
 generateTableInput(rt_2019.tableInput, '.table-box-input4', 1)
 
-generateTestAbc(rt_2020.firstTest, '.abc-first5', 'abc9', 1, 1, 'abc__options--narrow')
+generateTestAbc(
+  rt_2020.firstTest,
+  '.abc-first5',
+  'abc9',
+  1,
+  1,
+  'abc__options--narrow'
+)
 generateTableBoolean(rt_2020.tableBoolean, '.table-box-boolean5', 't20_b', 0)
 generateTableLetters(rt_2020.tableLetters, '.table-letters2', 2)
 generateTableInput(rt_2020.tableInput, '.table-box-input5', 1)
-
-// Функция для сохранения результатов теста в Local Storage
-function saveTestResult(category, points, percentage) {
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getDate()} ${getMonthName(currentDate.getMonth())} ${currentDate.getFullYear()}`;
-
-  const result = {
-    category: category,
-    date: formattedDate,
-    points: points,
-    percentage: percentage
-  };
-
-  // Получаем ранее сохраненные результаты или создаем пустой массив
-  let results = JSON.parse(localStorage.getItem('testResults')) || [];
-  results.push(result);
-
-  // Сохраняем обновленные результаты в Local Storage
-  localStorage.setItem('testResults', JSON.stringify(results));
-}
-
-// Функция для генерации HTML элементов на основе сохраненных результатов
-function generateResultsHTML(results) {
-  const resultsList = document.querySelector('.results__list');
-  resultsList.innerHTML = '';
-
-  results.forEach((result, index) => {
-    const listItem = document.createElement('li');
-    listItem.classList.add('results__item');
-    listItem.innerHTML = `
-      <span class="results__subtle-text" id="number">${index + 1}</span>
-      <span class="results__strong-text" id="kategory">${result.category}</span>
-      <span class="results__strong-text" id="date">${result.date}</span>
-      <span class="results__subtle-text" id="points">${result.points} z 30 punktów</span>
-      <span class="results__strong-text" id="percentage">${result.percentage}%</span>
-      <button class="results__btn">
-        <svg class="results__svg">
-          <use xlink:href="./img/delete.svg#delete"></use>
-        </svg>
-      </button>
-    `;
-
-    resultsList.appendChild(listItem);
-  });
-}
-
-// Вспомогательная функция для получения названия месяца по номеру
-function getMonthName(monthNumber) {
-  const monthNames = [
-    'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
-    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'
-  ];
-  return monthNames[monthNumber];
-}
-
-// Пример использования
-const category = 'Rozumienie tekstów pisanych - 2019';
-const points = 24;
-const totalQuestions = 30;
-const percentage = ((points / totalQuestions) * 100).toFixed(0);
-saveTestResult(category, points, totalQuestions, percentage);
-
-// Получаем сохраненные результаты и генерируем HTML
-const savedResults = JSON.parse(localStorage.getItem('testResults')) || [];
-generateResultsHTML(savedResults);
-function clearLocalStorage() {
-  localStorage.removeItem('testResults');
-}
-// clearLocalStorage();
