@@ -115,7 +115,6 @@ const checkTestResults = () => {
     selectedPage.querySelector('[data-category]').textContent
   const currentDateCategory = buttonDataName.slice(-4)
   const currentName = `${currentCategoryName} - ${currentDateCategory}`
-  console.log('b')
   saveTestResult(currentName, totalPoints, percentage)
   toggleModal(true, totalPoints, percentage)
   finishAudio(audioOnSelectedPage)
@@ -123,7 +122,7 @@ const checkTestResults = () => {
   checkTestBtn.removeEventListener('click', checkTestResults)
 }
 
-sectionButtons.addEventListener('click', (e) => {
+sectionButtons.addEventListener('click', e => {
   const element = e.target
   if (element.closest('button[data-test]')) {
     handleToSelectedPage(e)
@@ -137,7 +136,7 @@ sectionButtons.addEventListener('click', (e) => {
 
 mainPageBtn.addEventListener('click', handleToMainPage)
 
-modalBtns.addEventListener('click', (e) => {
+modalBtns.addEventListener('click', e => {
   const element = e.target
   if (element.closest('#to-main')) handleToMainPage()
   if (element.closest('#show-answers')) {
@@ -146,15 +145,11 @@ modalBtns.addEventListener('click', (e) => {
   }
 })
 
-resultsToMainBtn.addEventListener('click', () =>
-  toggleMainPage(false, mainPage, resultPage)
-)
+resultsToMainBtn.addEventListener('click', () => toggleMainPage(false, mainPage, resultPage))
 
-window.addEventListener('scroll', () =>
-  window.scrollY > 0
-    ? head.classList.add('shadow')
-    : head.classList.remove('shadow')
-)
+window.addEventListener('scroll', () => window.scrollY > 0
+  ? head.classList.add('shadow')
+  : head.classList.remove('shadow'))
 
 generateTestAbc(rs_2017.firstTest, '.abc-first0', 'abc1', 1, 0.5)
 generateTestAbc(rs_2017.secondTest, '.abc-second0', 'abc2', 0, 1)
@@ -172,38 +167,17 @@ generateTableBoolean(rs_2020.tableBoolean, '.table-box-boolean2', 's20_b', 1)
 generateTableNumber(rs_2020.tableNumber, '.table-number1', 1)
 generateTableInput(rs_2020.tableInput, '.table-box-input2', 2)
 
-generateTestAbc(
-  rt_2017.firstTest,
-  '.abc-first3',
-  'abc3',
-  2,
-  1,
-  'abc__options--narrow'
-)
+generateTestAbc(rt_2017.firstTest, '.abc-first3', 'abc3', 2, 1, 'abc__options--narrow')
 generateTableBoolean(rt_2017.tableBoolean, '.table-box-boolean3', 't17_b', 1)
 generateTableLetters(rt_2017.tableLetters, '.table-letters0', 0)
 generateTableInput(rt_2017.tableInput, '.table-box-input3', 3)
 
-generateTestAbc(
-  rt_2019.firstTest,
-  '.abc-first4',
-  'abc6',
-  0,
-  1,
-  'abc__options--narrow'
-)
+generateTestAbc(rt_2019.firstTest, '.abc-first4', 'abc6', 0, 1, 'abc__options--narrow')
 generateTableBoolean(rt_2019.tableBoolean, '.table-box-boolean4', 't19_b', 0)
 generateTableLetters(rt_2019.tableLetters, '.table-letters1', 1)
 generateTableInput(rt_2019.tableInput, '.table-box-input4', 1)
 
-generateTestAbc(
-  rt_2020.firstTest,
-  '.abc-first5',
-  'abc9',
-  1,
-  1,
-  'abc__options--narrow'
-)
+generateTestAbc(rt_2020.firstTest, '.abc-first5', 'abc9', 1, 1, 'abc__options--narrow')
 generateTableBoolean(rt_2020.tableBoolean, '.table-box-boolean5', 't20_b', 0)
 generateTableLetters(rt_2020.tableLetters, '.table-letters2', 2)
 generateTableInput(rt_2020.tableInput, '.table-box-input5', 1)

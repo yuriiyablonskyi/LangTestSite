@@ -12,23 +12,38 @@
 
   &__list
     background-color: $white
-    padding: 18px
+    padding: 20px
     border-radius: 10px
 
   &__item
-    padding: 12px 16px
+    padding: 14px 18px
     @include flex(space-between, center)
     border-radius: 5px
 
     &:nth-child(odd)
       background-color: $lightgray
 
-  &__subtle-text
+  &__subtle-points,
+  &__subtle-number
     color: $slate
 
-  &__strong-text
+  &__strong-category,
+  &__strong-date,
+  &__subtle-percentage
     font-weight: 600
     color: $black
+
+  &__subtle-number
+    width: 15px
+
+  &__strong-category
+    width: 290px
+
+  &__strong-date
+    width: 140px
+
+  &__subtle-points
+    width: 120px
 
   &__btn
     background-color: transparent

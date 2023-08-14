@@ -56,4 +56,4 @@ generateResultsHTML(savedResults)
 function clearLocalStorage() {
   localStorage.removeItem('testResults')
 }
-// clearLocalStorage();
+clearLocalStorage();
