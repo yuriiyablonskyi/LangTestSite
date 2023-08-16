@@ -16,10 +16,15 @@
 
   <div class="modal" id="delete">
     <div class="modal__box">
-      <h5 class="modal__question">Napewno usunąć ?</h5>
+      <div class="modal__content">
+        <h5 class="modal__alert">Ostrzeżenie: Usuwanie Wyniku</h5>
+        <p class="modal__text">To ostrzeżenie dotyczy operacji usunięcia. Klikając 'Potwierdź', akceptujesz
+          nieodwracalne
+          usunięcie wyniku z pamięci przeglądarki. Czy na pewno chcesz kontynuować?</p>
+      </div>
       <div class="modal__buttons">
-        <button class="btn btn--large" id="to-main"><span class="btn__text">nie</span></button>
-        <button class="btn btn--large" id="show-answers"><span class="btn__text">tak</span></button>
+        <button class="btn" id="cancel"><span class="btn__text">Anuluj</span></button>
+        <button class="btn btn--delete" id="confirm"><span class="btn__text">Potwierdź</span></button>
       </div>
     </div>
   </div>

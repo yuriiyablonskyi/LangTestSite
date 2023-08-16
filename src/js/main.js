@@ -19,6 +19,7 @@ import toggleMainPage from './utils/other-function/toggleMainPage'
 import calculatePercentage from './utils/other-function/calculatePercentage'
 import saveTestResult from './utils/other-function/saveTestResult'
 import generateHTMLFromStorage from './utils/other-function/generateHTMLFromStorage'
+import removeElementResult from './utils/other-function/removeElementResult'
 
 const head = document.querySelector('.head')
 const mainPageBtn = document.getElementById('main-btn')
@@ -97,7 +98,7 @@ const handleToSelectedPage = (e) => {
 }
 
 const handleToMainPage = () => {
-  toggleModal(false)
+  toggleModal('results', false)
   finishAudio(audioOnSelectedPage)
   clearInterval(countdownInterval)
   toggleMainPage(false, mainPage, selectedPage, head)
@@ -116,7 +117,7 @@ const checkTestResults = () => {
   const currentDateCategory = buttonDataName.slice(-4)
   const currentName = `${currentCategoryName} - ${currentDateCategory}`
   saveTestResult(currentName, totalPoints, percentage)
-  toggleModal(true, totalPoints, percentage)
+  toggleModal('results', true, totalPoints, percentage)
   finishAudio(audioOnSelectedPage)
   clearInterval(countdownInterval)
   checkTestBtn.removeEventListener('click', checkTestResults)
@@ -131,6 +132,7 @@ sectionButtons.addEventListener('click', e => {
   if (element.closest('#history-btn')) {
     toggleMainPage(true, mainPage, resultPage)
     generateHTMLFromStorage()
+    removeElementResult()
   }
 })
 
@@ -140,11 +142,10 @@ modalBtns.addEventListener('click', e => {
   const element = e.target
   if (element.closest('#to-main')) handleToMainPage()
   if (element.closest('#show-answers')) {
-    toggleModal(false)
+    toggleModal('results', false)
     checkTestBtn.disabled = true
   }
 })
-
 resultsToMainBtn.addEventListener('click', () => toggleMainPage(false, mainPage, resultPage))
 
 window.addEventListener('scroll', () => window.scrollY > 0

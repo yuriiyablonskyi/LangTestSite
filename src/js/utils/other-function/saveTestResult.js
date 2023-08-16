@@ -19,6 +19,7 @@ export default function saveTestResult(category, points, percentage) {
   }
 
   const currentDate = new Date()
+  const id = currentDate.getTime()
   const date = `${currentDate.getDate()} ${getMonthName(
     currentDate.getMonth()
   )} ${currentDate.getFullYear()}`
@@ -28,6 +29,7 @@ export default function saveTestResult(category, points, percentage) {
     points,
     percentage,
     date,
+    id
   }
   const resultData = JSON.parse(localStorage.getItem('testResult')) || []
   resultData.push(result)
