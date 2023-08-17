@@ -87,9 +87,7 @@ const finishAudio = (audio) => {
 
 const handleToSelectedPage = (e) => {
   buttonDataName = e.target.closest('.btn[data-test]').dataset.test
-  selectedPage = document.querySelector(
-    `section[data-test='${buttonDataName}']`
-  )
+  selectedPage = document.querySelector(`section[data-test='${buttonDataName}']`)
   audioOnSelectedPage = selectedPage.querySelector('audio')
   toggleMainPage(true, mainPage, selectedPage, head)
   handleTimer(buttonDataName)
@@ -124,12 +122,22 @@ const checkTestResults = () => {
 }
 
 sectionButtons.addEventListener('click', e => {
-  const element = e.target
-  if (element.closest('button[data-test]')) {
-    handleToSelectedPage(e)
+  const btnPage = e.target.closest('button[data-test]')
+  const btnResult = e.target.closest('#result-btn')
+
+
+  if (btnPage) {
+    const hasAudio = btnPage.dataset.test.substring(0, 2) === 'rs'
+    if (hasAudio) {
+      console.log('audio');
+      toggleModal('alert', true)
+      
+    } else {
+      handleToSelectedPage(e)
+    }
   }
 
-  if (element.closest('#history-btn')) {
+  if (btnResult) {
     toggleMainPage(true, mainPage, resultPage)
     generateHTMLFromStorage()
     removeElementResult()
