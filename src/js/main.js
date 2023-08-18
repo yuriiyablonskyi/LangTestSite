@@ -135,10 +135,9 @@ sectionButtons.addEventListener('click', e => {
   if (btnResult) {
     toggleMainPage(true, mainPage, resultPage)
     generateHTMLFromStorage()
-    removeElementResult()
   }
 })
-
+removeElementResult()
 modalAlert.addEventListener('click', ({target}) => {
 
   if (target.closest('button')) {

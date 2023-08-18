@@ -2,7 +2,6 @@ export default function generateHTMLFromStorage() {
   const resultContainer = document.querySelector('.results__content')
 
   while (resultContainer.firstChild) {
-    console.log(resultContainer)
     resultContainer.removeChild(resultContainer.firstChild)
   }
 
