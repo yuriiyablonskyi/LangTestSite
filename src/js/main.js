@@ -47,6 +47,7 @@ const timerValues = {
 let selectedPage = ''
 let countdownInterval = 0
 let audioOnSelectedPage
+let buttonName = ''
 
 const timer = (minutes) => {
   countdownEl.textContent = `${minutes}:00`
@@ -115,19 +116,6 @@ const checkTestResults = () => {
   checkTestBtn.removeEventListener('click', checkTestResults)
 }
 
-const openModalAlert = buttonName => {
-  modalAlert.classList.add('show')
-  modalAlert.addEventListener('click', e => {
-    const element = e.target
-    if (element.closest('button')) {
-      modalAlert.classList.remove('show')
-    }
-    if (element.closest('#to-page')) {
-      console.log(buttonName);
-      handleToSelectedPage(buttonName)
-    }
-  })
-}
 
 sectionButtons.addEventListener('click', e => {
   const btnPage = e.target.closest('button[data-test]')
@@ -135,18 +123,11 @@ sectionButtons.addEventListener('click', e => {
 
 
   if (btnPage) {
-    const buttonName = btnPage.dataset.test
+    buttonName = btnPage.dataset.test
     const hasAudio = btnPage.dataset.test.substring(0, 2) === 'rs'
     if (hasAudio) {
-      openModalAlert(buttonName)
+      modalAlert.classList.add('show')
     } else {
-      toggleMainPage(true, mainPage, selectedPage, head)
-      timer(timerValues[buttonName])
-      checkTestBtn.addEventListener('click', checkTestResults)
- 
-
-
-
       handleToSelectedPage(buttonName)
     }
   }
@@ -158,6 +139,16 @@ sectionButtons.addEventListener('click', e => {
   }
 })
 
+modalAlert.addEventListener('click', ({target}) => {
+
+  if (target.closest('button')) {
+    modalAlert.classList.remove('show')
+  }
+  if (target.closest('#to-page')) {
+    console.log(buttonName);
+    handleToSelectedPage(buttonName)
+  }
+})
 
 mainPageBtn.addEventListener('click', handleToMainPage)
 

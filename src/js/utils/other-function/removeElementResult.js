@@ -21,6 +21,7 @@ export default function removeElementResult() {
       toggleModal('delete', false)
     }
     if (element.closest('#confirm')) {
+      console.log(currentId);
       const storedResults = JSON.parse(localStorage.getItem('testResult')) || []
       const updatedResults = storedResults.filter(item => item.id !== currentId)
       localStorage.setItem('testResult', JSON.stringify(updatedResults))
