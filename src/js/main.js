@@ -30,9 +30,10 @@ const mainPage = document.querySelector('.main')
 const countdownEl = document.getElementById('timer')
 const modalBtns = document.querySelector('.modal__buttons')
 const resultPage = document.querySelector('.results')
+const modalAlert = document.getElementById('alert')
 
 const timerValues = {
-  rs_2017: 1,
+  rs_2017: 25,
   rt_2017: 45,
   pg_2017: 45,
   rs_2019: 25,
@@ -43,7 +44,6 @@ const timerValues = {
   pg_2020: 45,
 }
 
-let buttonDataName = ''
 let selectedPage = ''
 let countdownInterval = 0
 let audioOnSelectedPage
@@ -69,10 +69,6 @@ const timer = (minutes) => {
   }, 1000)
 }
 
-const handleTimer = (buttonDataName) => {
-  if (!timerValues.hasOwnProperty(buttonDataName)) return
-  timer(timerValues[buttonDataName])
-}
 
 const removePointsFromSpans = () =>
   selectedPage
@@ -85,12 +81,11 @@ const finishAudio = (audio) => {
   audio.currentTime = 0
 }
 
-const handleToSelectedPage = (e) => {
-  buttonDataName = e.target.closest('.btn[data-test]').dataset.test
-  selectedPage = document.querySelector(`section[data-test='${buttonDataName}']`)
+const handleToSelectedPage = buttonName => {
+  selectedPage = document.querySelector(`section[data-test='${buttonName}']`)
   audioOnSelectedPage = selectedPage.querySelector('audio')
   toggleMainPage(true, mainPage, selectedPage, head)
-  handleTimer(buttonDataName)
+  timer(timerValues[buttonName])
   if (audioOnSelectedPage) audioOnSelectedPage.play()
   checkTestBtn.addEventListener('click', checkTestResults)
 }
@@ -110,9 +105,8 @@ const handleToMainPage = () => {
 const checkTestResults = () => {
   const totalPoints = checkAnswer(selectedPage)
   const percentage = calculatePercentage(totalPoints)
-  const currentCategoryName =
-    selectedPage.querySelector('[data-category]').textContent
-  const currentDateCategory = buttonDataName.slice(-4)
+  const currentCategoryName = selectedPage.querySelector('[data-category]').textContent
+  const currentDateCategory = selectedPage.dataset.test.substr(3)
   const currentName = `${currentCategoryName} - ${currentDateCategory}`
   saveTestResult(currentName, totalPoints, percentage)
   toggleModal('results', true, totalPoints, percentage)
@@ -121,19 +115,39 @@ const checkTestResults = () => {
   checkTestBtn.removeEventListener('click', checkTestResults)
 }
 
+const openModalAlert = buttonName => {
+  modalAlert.classList.add('show')
+  modalAlert.addEventListener('click', e => {
+    const element = e.target
+    if (element.closest('button')) {
+      modalAlert.classList.remove('show')
+    }
+    if (element.closest('#to-page')) {
+      console.log(buttonName);
+      handleToSelectedPage(buttonName)
+    }
+  })
+}
+
 sectionButtons.addEventListener('click', e => {
   const btnPage = e.target.closest('button[data-test]')
   const btnResult = e.target.closest('#result-btn')
 
 
   if (btnPage) {
+    const buttonName = btnPage.dataset.test
     const hasAudio = btnPage.dataset.test.substring(0, 2) === 'rs'
     if (hasAudio) {
-      console.log('audio');
-      toggleModal('alert', true)
-      
+      openModalAlert(buttonName)
     } else {
-      handleToSelectedPage(e)
+      toggleMainPage(true, mainPage, selectedPage, head)
+      timer(timerValues[buttonName])
+      checkTestBtn.addEventListener('click', checkTestResults)
+ 
+
+
+
+      handleToSelectedPage(buttonName)
     }
   }
 
@@ -143,6 +157,7 @@ sectionButtons.addEventListener('click', e => {
     removeElementResult()
   }
 })
+
 
 mainPageBtn.addEventListener('click', handleToMainPage)
 

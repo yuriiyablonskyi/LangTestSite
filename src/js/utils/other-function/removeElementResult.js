@@ -3,8 +3,8 @@ import generateHTMLFromStorage from './generateHTMLFromStorage'
 
 export default function removeElementResult() {
   const modal = document.getElementById('delete')
+
   const content = document.querySelector('.results__content')
-  const deleteBtns = document.querySelectorAll('.results__btn')
   let currentId = 0
 
   content.addEventListener('click', e => {
@@ -25,7 +25,6 @@ export default function removeElementResult() {
       const updatedResults = storedResults.filter(item => item.id !== currentId)
       localStorage.setItem('testResult', JSON.stringify(updatedResults))
       generateHTMLFromStorage()
-      currentId = 0
     }
   })
 }

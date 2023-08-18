@@ -2,7 +2,8 @@ export default function generateHTMLFromStorage() {
   const resultContainer = document.querySelector('.results__content')
 
   while (resultContainer.firstChild) {
-    resultContainer.removeChild(resultContainer.firstChild);
+    console.log(resultContainer)
+    resultContainer.removeChild(resultContainer.firstChild)
   }
 
   const results = JSON.parse(localStorage.getItem('testResult')) || []
