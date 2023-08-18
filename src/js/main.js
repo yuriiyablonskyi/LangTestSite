@@ -58,9 +58,7 @@ const timer = (minutes) => {
     countdown--
     const minutesRemaining = Math.floor(countdown / 60)
     const secondsRemaining = countdown % 60
-    const countdownText = `${minutesRemaining
-      .toString()
-      .padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`
+    const countdownText = `${minutesRemaining.toString().padStart(2, '0')}:${secondsRemaining.toString().padStart(2, '0')}`
     countdownEl.textContent = countdownText
 
     if (countdown === 0) {
@@ -76,7 +74,7 @@ const removePointsFromSpans = () =>
     .querySelectorAll('.item__text span')
     .forEach((element) => (element.textContent = '-'))
 
-const finishAudio = (audio) => {
+const finishAudio = audio => {
   if (!audio) return
   audio.pause()
   audio.currentTime = 0
@@ -84,10 +82,8 @@ const finishAudio = (audio) => {
 
 const handleToSelectedPage = buttonName => {
   selectedPage = document.querySelector(`section[data-test='${buttonName}']`)
-  audioOnSelectedPage = selectedPage.querySelector('audio')
   toggleMainPage(true, mainPage, selectedPage, head)
   timer(timerValues[buttonName])
-  if (audioOnSelectedPage) audioOnSelectedPage.play()
   checkTestBtn.addEventListener('click', checkTestResults)
 }
 
@@ -117,11 +113,9 @@ const checkTestResults = () => {
 }
 
 
-sectionButtons.addEventListener('click', e => {
-  const btnPage = e.target.closest('button[data-test]')
-  const btnResult = e.target.closest('#result-btn')
-
-
+sectionButtons.addEventListener('click', ({ target }) => {
+  const btnPage = target.closest('button[data-test]')
+  const btnResult = target.closest('#result-btn')
   if (btnPage) {
     buttonName = btnPage.dataset.test
     const hasAudio = btnPage.dataset.test.substring(0, 2) === 'rs'
@@ -129,27 +123,31 @@ sectionButtons.addEventListener('click', e => {
       modalAlert.classList.add('show')
     } else {
       handleToSelectedPage(buttonName)
+
+      audioOnSelectedPage = selectedPage.querySelector('audio')
+      if (audioOnSelectedPage) audioOnSelectedPage.play()
     }
   }
-
   if (btnResult) {
     toggleMainPage(true, mainPage, resultPage)
     generateHTMLFromStorage()
   }
 })
 removeElementResult()
-modalAlert.addEventListener('click', ({target}) => {
+modalAlert.addEventListener('click', ({ target }) => {
 
   if (target.closest('button')) {
     modalAlert.classList.remove('show')
   }
   if (target.closest('#to-page')) {
-    console.log(buttonName);
     handleToSelectedPage(buttonName)
   }
 })
 
-mainPageBtn.addEventListener('click', handleToMainPage)
+mainPageBtn.addEventListener('click', () => {
+  handleToMainPage()
+  checkTestBtn.removeEventListener('click', checkTestResults)
+})
 
 modalBtns.addEventListener('click', e => {
   const element = e.target
