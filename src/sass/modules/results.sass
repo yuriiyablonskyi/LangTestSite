@@ -14,11 +14,21 @@
     background-color: $white
     padding: 20px
     border-radius: 10px
+    @media (max-width: $tablet)
+      padding: 15px
 
   &__item
     padding: 14px 18px
     @include flex(space-between, center)
+    flex-wrap: wrap
     border-radius: 5px
+
+    @media (max-width: $tablet)
+      padding: 10px 14px
+
+    @media (max-width: $tablet)
+      font-size: 14px
+      padding: 6px 10px
 
     &:nth-child(odd)
       background-color: $lightgray
@@ -34,16 +44,20 @@
     color: $black
 
   &__subtle-number
-    width: 15px
+    width: 2%
 
   &__strong-category
-    width: 290px
+    width: 30%
 
-  &__strong-date
-    width: 140px
+    @media (max-width: $mobile)
+      width: 90%
 
+  &__strong-date,
   &__subtle-points
-    width: 120px
+    width: 15%
+    @media (max-width: $mobile)
+      width: 30%
+      text-align: center
 
   &__btn
     background-color: transparent
@@ -61,12 +75,3 @@
     width: 19px
     border-radius: 5px
     transition: all .15s linear
-
-// .container
-
-// .btn
-//   &__svg
-
-//     &__svg--left
-
-//     &__text
